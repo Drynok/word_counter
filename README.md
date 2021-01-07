@@ -1,2 +1,2 @@
-# Word Count Drupal module
-Word counter - Drupal test assignment
+# Word Counter Drupal module
+Word Counter - Drupal test assignment
