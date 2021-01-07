@@ -1,2 +1,3 @@
-# Word Counter Drupal module
-Word Counter - Drupal test assignment
+# Word Counter
+
+Adds a word counter to Articles Body field.
