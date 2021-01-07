@@ -3,26 +3,30 @@
 namespace Drupal\word_counter;
 
 /**
- * Interface WordCounterInterface.
+ * Calculated count of words in a string.
  */
 interface WordCounterInterface {
 
   /**
-   * Returns number of characters
+   * Returns number of characters.
    *
    * @param string $data
+   *   Input string.
    *
    * @return int|null
+   *   Number of words in a string.
    */
-  function getCharCount(string $data): ?int;
+  public function getCharCount(string $data): ?int;
 
   /**
-   * Removed html from data string
+   * Strips html tags and new line symbols.
    *
    * @param string $data
+   *   Input string.
    *
    * @return string|null
+   *   Returns html stripped string.
    */
-  function preprocessData(string $data): ?string;
+  public function preprocessData(string $data): ?string;
 
 }
