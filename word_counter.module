@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Contains word_counter.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function word_counter_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the word_counter module.
+    case 'help.page.word_counter':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Word counter') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_preprocess_HOOK()
+ */
+function word_counter_preprocess_field(&$variables) {
+  $element = $variables['element'];
+  $bundle = $element['#bundle'];
+  $field_name = $element['#field_name'];
+
+  if ($bundle == 'article' && $field_name == 'body') {
+    if (Drupal::config('word_counter.settings.enabled')) {
+      $nid = $element['#object']->id();
+      $word_count = Drupal::keyValue('word_counter')->get($nid);
+
+      if ($word_count > 0) {
+        $variables['items'][0]['content']['#text'] .= '<span>' . t(" (@num words)", ['@num' => $word_count]) . '</span>';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function word_counter_entity_insert(EntityInterface $entity) {
+  word_counter_store_counter($entity);
+}
+
+/**
+ * Implements hook_entity_update().
+ */
+function word_counter_entity_update(EntityInterface $entity) {
+  word_counter_store_counter($entity);
+}
+
+/**
+ *
+ * @param $nid
+ * @param $body
+ */
+function word_counter_store_counter(EntityInterface $entity) {
+  if ($entity->bundle() == 'article') {
+    if (Drupal::config('word_counter.settings.enabled')) {
+      $nid = $entity->id();
+
+      $body = $entity->get('body')->value;
+      $words_count = Drupal::service('word_counter')->getCharCount($body);
+
+      if ($body) {
+        Drupal::keyValue('word_counter')->set($nid, $words_count);
+      }
+    }
+  }
+}

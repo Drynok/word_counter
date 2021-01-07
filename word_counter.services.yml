@@ -1,0 +1,4 @@
+services:
+  word_counter:
+    class: Drupal\word_counter\WordCounter
+    arguments: []

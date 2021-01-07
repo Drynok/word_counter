@@ -1,0 +1,6 @@
+word_counter.settings:
+  title: 'Word Counter'
+  route_name: word_counter.settings_form
+  description: 'Word Counter'
+  parent: system.admin_config_system
+  weight: 99
